@@ -57,13 +57,31 @@ describe Enigma do
 
     it 'rotors III and II with III set to "B" should forward map "A" to "D"' do
       rotor_iii.set('B')
+      rotor_ii.right = rotor_iii
       char = rotor_iii.forward('A')
-      expect(rotor_ii.forward(char, rotor_iii.offset)).to eql 'D'
+      expect(rotor_ii.forward(char)).to eql 'D'
     end
 
     it 'rotors III and II with III set to "B" should reverse map "D" to "A"' do
       rotor_iii.set('B')
-      char = rotor_ii.reverse('D',rotor_iii.offset)
+      rotor_ii.right = rotor_iii
+      char = rotor_ii.reverse('D')
+      expect(rotor_iii.reverse(char)).to eql 'A'
+    end
+
+    it 'rotors III and II with III set to "B" & "C" should forward map "A" to "S"' do
+      rotor_iii.set('B')
+      rotor_ii.set('C')
+      rotor_ii.right = rotor_iii
+      char = rotor_iii.forward('A')
+      expect(rotor_ii.forward(char)).to eql 'S'
+    end
+
+    it 'rotors III and II with III set to "B" & "C" should reverse map "S" to "A"' do
+      rotor_iii.set('B')
+      rotor_ii.set('C')
+      rotor_ii.right = rotor_iii
+      char = rotor_ii.reverse('S')
       expect(rotor_iii.reverse(char)).to eql 'A'
     end
   end

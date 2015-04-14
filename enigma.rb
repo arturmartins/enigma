@@ -16,13 +16,21 @@ module Enigma
     end
   end
 
+  class NullRotor
+    def offset
+      0
+    end
+  end
+
   class Rotor
 
     attr_reader :offset
+    attr_accessor :right
 
     def initialize(mapping)
       @mapping = mapping
       @offset = 0
+      self.right = NullRotor.new
     end
 
     def set(char)
@@ -37,13 +45,13 @@ module Enigma
       @offset = (@offset + 1) % ALPHABET.length
     end
 
-    def forward(char, offset=0)
+    def forward(char)
       i = ALPHABET.index(char)
-      @mapping.rotate(@offset - offset)[i]
+      @mapping.rotate(@offset - right.offset)[i]
     end
 
-    def reverse(char, offset=0)
-      i = @mapping.rotate(@offset - offset).index(char)
+    def reverse(char)
+      i = @mapping.rotate(@offset - right.offset).index(char)
       ALPHABET[i]
     end
   end
