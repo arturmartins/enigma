@@ -3,7 +3,8 @@ require_relative 'enigma'
 describe Enigma do
 
   let(:rotor_iii) { Enigma::Rotor.new(Enigma::ROTOR_III_MAP, Enigma::ROTOR_III_NOTCH) }
-  let(:rotor_ii)  { Enigma::Rotor.new(Enigma::ROTOR_II_MAP, Enigma::ROTOR_II_NOTCH) }
+  let(:rotor_ii) { Enigma::Rotor.new(Enigma::ROTOR_II_MAP, Enigma::ROTOR_II_NOTCH) }
+  let(:rotor_i) { Enigma::Rotor.new(Enigma::ROTOR_I_MAP, Enigma::ROTOR_I_NOTCH) }
   let(:reflector_b) { Enigma::Reflector.new(Enigma::REFLECTOR_B_MAP) }
 
   describe Enigma::Rotor do
@@ -134,6 +135,36 @@ describe Enigma do
       char = rotor_iii.forward('A')
       char = reflector_b.reflect(char)
       expect(rotor_iii.reverse(char)).to eql 'K'
+    end
+
+  end
+
+  describe 'breadboard' do
+
+    it 'full set up converts should convert "J" to "S"' do
+      rotor_i.set('A')
+      rotor_i.right = rotor_ii
+
+      rotor_ii.set('A')
+      rotor_ii.left = rotor_i
+      rotor_ii.right = rotor_iii
+
+      rotor_iii.set('B')
+      rotor_iii.left = rotor_ii
+
+      reflector_b.right = rotor_i
+
+      char = rotor_iii.forward('J')
+      char = rotor_ii.forward(char)
+      char = rotor_i.forward(char)
+
+      char = reflector_b.reflect(char)
+
+      char = rotor_i.reverse(char)
+      char = rotor_ii.reverse(char)
+      char = rotor_iii.reverse(char)
+
+      expect(char).to eql 'S'
     end
   end
 end
