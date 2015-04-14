@@ -5,13 +5,15 @@ module Enigma
   ROTOR_II_MAP = %w(A J D K S I R U X B L H W T M C Q G Z N P Y F V O E).freeze
   ROTOR_III_MAP = %w(B D F H J L C P R T X V Z N Y E I W G A K M U S Q O).freeze
 
-  ROTOR_I_NOTCH = 'R'
-  ROTOR_II_NOTCH = 'F'
-  ROTOR_III_NOTCH = 'W'
+  ROTOR_I_NOTCH = 'Q'
+  ROTOR_II_NOTCH = 'E'
+  ROTOR_III_NOTCH = 'V'
 
   REFLECTOR_B_MAP = %w(Y R U H Q S L D P X N G O K M I E B F Z C W V J A T).freeze
 
   class Machine
+
+    attr_accessor :rotors
 
     def initialize
       @rotors = [
@@ -34,12 +36,12 @@ module Enigma
 
     def convert(text)
       chars = text.scan(/./)
-      chars.map{|c| convert_char(c)}.join('')
+      chars.map { |c| convert_char(c) }.join('')
     end
 
     def convert_char(char)
 
-      @rotors[0].rotate!
+      rotate!
 
       @rotors.each do |r|
         char = r.forward(char)
@@ -53,6 +55,16 @@ module Enigma
 
       char
 
+    end
+
+    def rotate!
+      if @rotors[1].turnover?
+        @rotors[2].rotate!
+        @rotors[1].rotate!
+      elsif @rotors[0].turnover?
+        @rotors[1].rotate!
+      end
+      @rotors[0].rotate!
     end
   end
 
@@ -97,7 +109,7 @@ module Enigma
 
     def rotate!
       @offset = (@offset + 1) % ALPHABET.length
-      self.left.rotate! if self.turnover?
+      # self.left.rotate! if self.turnover?
     end
 
     def forward(char)
