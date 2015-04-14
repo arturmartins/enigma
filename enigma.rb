@@ -25,18 +25,26 @@ module Enigma
     end
   end
 
-  class Rotor
+  class Component
+
+    attr_accessor :right
+
+    def initialize(mapping)
+      @mapping = mapping
+      self.right = NullRotor.new
+    end
+  end
+
+  class Rotor < Component
 
     attr_reader :offset
     attr_accessor :left
-    attr_accessor :right
 
     def initialize(mapping, notch=nil)
-      @mapping = mapping
+      super(mapping)
       @offset = 0
       @notch = notch
       self.left = NullRotor.new
-      self.right = NullRotor.new
     end
 
     def set(char)
@@ -67,15 +75,14 @@ module Enigma
     end
   end
 
-  class Reflector
-
-    def initialize(mapping)
-      @mapping = mapping
-    end
+  class Reflector < Component
 
     def reflect(char)
+      puts char
       i = ALPHABET.index(char)
-      @mapping[i]
+      char = @mapping.rotate(-right.offset)[i]
+      puts char
+      char
     end
 
   end

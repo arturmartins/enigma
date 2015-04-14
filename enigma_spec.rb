@@ -2,10 +2,11 @@ require_relative 'enigma'
 
 describe Enigma do
 
-  describe Enigma::Rotor do
+  let(:rotor_iii) { Enigma::Rotor.new(Enigma::ROTOR_III_MAP, Enigma::ROTOR_III_NOTCH) }
+  let(:rotor_ii)  { Enigma::Rotor.new(Enigma::ROTOR_II_MAP, Enigma::ROTOR_II_NOTCH) }
+  let(:reflector_b) { Enigma::Reflector.new(Enigma::REFLECTOR_B_MAP) }
 
-    let(:rotor_iii) { Enigma::Rotor.new(Enigma::ROTOR_III_MAP, Enigma::ROTOR_III_NOTCH) }
-    let(:rotor_ii)  { Enigma::Rotor.new(Enigma::ROTOR_II_MAP, Enigma::ROTOR_II_NOTCH) }
+  describe Enigma::Rotor do
 
     it 'should start with "A" as the window char' do
       expect(rotor_iii.window_char).to eql 'A'
@@ -104,7 +105,6 @@ describe Enigma do
   end
 
   describe Enigma::Reflector do
-    let(:reflector_b) { Enigma::Reflector.new(Enigma::REFLECTOR_B_MAP) }
 
     it 'reflector B should map "A" to "Y"' do
       expect(reflector_b.reflect('A')).to eql 'Y'
@@ -112,6 +112,28 @@ describe Enigma do
 
     it 'reflector B should map "Y" to "A"' do
       expect(reflector_b.reflect('Y')).to eql 'A'
+    end
+
+    it 'reflector B with Rotor III at defaults should map "A" to "I"' do
+      reflector_b.right = rotor_iii
+      char = rotor_iii.forward('A')
+      char = reflector_b.reflect(char)
+      expect(rotor_iii.reverse(char)).to eql 'I'
+    end
+
+    it 'reflector B with Rotor III at defaults should map "I" to "A"' do
+      reflector_b.right = rotor_iii
+      char = rotor_iii.forward('I')
+      char = reflector_b.reflect(char)
+      expect(rotor_iii.reverse(char)).to eql 'A'
+    end
+
+    it 'reflector B with Rotor III at "B" should map "A" to "K"' do
+      rotor_iii.set('B')
+      reflector_b.right = rotor_iii
+      char = rotor_iii.forward('A')
+      char = reflector_b.reflect(char)
+      expect(rotor_iii.reverse(char)).to eql 'K'
     end
   end
 end
