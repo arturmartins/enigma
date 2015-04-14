@@ -78,11 +78,9 @@ module Enigma
   class Reflector < Component
 
     def reflect(char)
-      puts char
       i = ALPHABET.index(char)
       char = @mapping.rotate(-right.offset)[i]
-      puts char
-      char
+      ALPHABET.rotate(right.offset)[ALPHABET.index(char)]
     end
 
   end
