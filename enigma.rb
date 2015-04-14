@@ -13,7 +13,7 @@ module Enigma
 
   class Machine
 
-    def decrypt(ciphertext)
+    def convert(text)
       # Implement Me :-)
     end
 
