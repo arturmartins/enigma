@@ -20,16 +20,22 @@ module Enigma
     def offset
       0
     end
+
+    def rotate!
+    end
   end
 
   class Rotor
 
     attr_reader :offset
+    attr_accessor :left
     attr_accessor :right
 
-    def initialize(mapping)
+    def initialize(mapping, notch=nil)
       @mapping = mapping
       @offset = 0
+      @notch = notch
+      self.left = NullRotor.new
       self.right = NullRotor.new
     end
 
@@ -43,6 +49,7 @@ module Enigma
 
     def rotate!
       @offset = (@offset + 1) % ALPHABET.length
+      self.left.rotate! if self.turnover?
     end
 
     def forward(char)
@@ -53,6 +60,10 @@ module Enigma
     def reverse(char)
       i = @mapping.rotate(@offset - right.offset).index(char)
       ALPHABET[i]
+    end
+
+    def turnover?
+      window_char == @notch
     end
   end
 

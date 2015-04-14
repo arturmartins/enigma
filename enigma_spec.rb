@@ -4,8 +4,8 @@ describe Enigma do
 
   describe Enigma::Rotor do
 
-    let(:rotor_iii) { Enigma::Rotor.new(Enigma::ROTOR_III_MAP) }
-    let(:rotor_ii)  { Enigma::Rotor.new(Enigma::ROTOR_II_MAP) }
+    let(:rotor_iii) { Enigma::Rotor.new(Enigma::ROTOR_III_MAP, Enigma::ROTOR_III_NOTCH) }
+    let(:rotor_ii)  { Enigma::Rotor.new(Enigma::ROTOR_II_MAP, Enigma::ROTOR_II_NOTCH) }
 
     it 'should start with "A" as the window char' do
       expect(rotor_iii.window_char).to eql 'A'
@@ -83,6 +83,23 @@ describe Enigma do
       rotor_ii.right = rotor_iii
       char = rotor_ii.reverse('S')
       expect(rotor_iii.reverse(char)).to eql 'A'
+    end
+
+    it 'rotor III should not indicate turnover when "A" in in the window' do
+      rotor_iii.set('A')
+      expect(rotor_iii.turnover?).to eql false
+    end
+
+    it 'rotor III should indicate turnover when "W" in in the window' do
+      rotor_iii.set('W')
+      expect(rotor_iii.turnover?).to eql true
+    end
+
+    it 'rotor III should rotate rotor II when "W" appears in the window' do
+      rotor_iii.set('V')
+      rotor_iii.left = rotor_ii
+      rotor_iii.rotate!
+      expect(rotor_ii.window_char).to eql 'B'
     end
   end
 
