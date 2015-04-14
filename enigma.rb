@@ -67,4 +67,17 @@ module Enigma
     end
   end
 
+  class Reflector
+
+    def initialize(mapping)
+      @mapping = mapping
+    end
+
+    def reflect(char)
+      i = ALPHABET.index(char)
+      @mapping[i]
+    end
+
+  end
+
 end

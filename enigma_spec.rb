@@ -103,5 +103,16 @@ describe Enigma do
     end
   end
 
+  describe Enigma::Reflector do
+    let(:reflector_b) { Enigma::Reflector.new(Enigma::REFLECTOR_B_MAP) }
+
+    it 'reflector B should map "A" to "Y"' do
+      expect(reflector_b.reflect('A')).to eql 'Y'
+    end
+
+    it 'reflector B should map "Y" to "A"' do
+      expect(reflector_b.reflect('Y')).to eql 'A'
+    end
+  end
 end
 
