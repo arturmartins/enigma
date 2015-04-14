@@ -6,6 +6,7 @@ describe Enigma do
   let(:rotor_ii) { Enigma::Rotor.new(Enigma::ROTOR_II_MAP, Enigma::ROTOR_II_NOTCH) }
   let(:rotor_i) { Enigma::Rotor.new(Enigma::ROTOR_I_MAP, Enigma::ROTOR_I_NOTCH) }
   let(:reflector_b) { Enigma::Reflector.new(Enigma::REFLECTOR_B_MAP) }
+  let(:machine) { Enigma::Machine.new }
 
   describe Enigma::Rotor do
 
@@ -167,5 +168,14 @@ describe Enigma do
       expect(char).to eql 'S'
     end
   end
+
+  describe Enigma::Machine do
+
+    it 'should convert "J" to "S" on default settings' do
+      expect(machine.convert('J')).to eql 'S'
+    end
+
+  end
+
 end
 

@@ -12,7 +12,47 @@ module Enigma
   REFLECTOR_B_MAP = %w(Y R U H Q S L D P X N G O K M I E B F Z C W V J A T).freeze
 
   class Machine
-    def convert(char)
+
+    def initialize
+      @rotors = [
+          Enigma::Rotor.new(Enigma::ROTOR_III_MAP, Enigma::ROTOR_III_NOTCH),
+          Enigma::Rotor.new(Enigma::ROTOR_II_MAP, Enigma::ROTOR_II_NOTCH),
+          Enigma::Rotor.new(Enigma::ROTOR_I_MAP, Enigma::ROTOR_I_NOTCH)
+      ]
+
+      @reflector = Enigma::Reflector.new(Enigma::REFLECTOR_B_MAP)
+
+      @rotors[0].left = @rotors[1]
+
+      @rotors[1].right = @rotors[0]
+      @rotors[1].left = @rotors[2]
+
+      @rotors[2].right = @rotors[1]
+
+      @reflector.right = @rotors[2]
+    end
+
+    def convert(text)
+      chars = text.scan(/./)
+      chars.map{|c| convert_char(c)}.join('')
+    end
+
+    def convert_char(char)
+
+      @rotors[0].rotate!
+
+      @rotors.each do |r|
+        char = r.forward(char)
+      end
+
+      char = @reflector.reflect(char)
+
+      @rotors.reverse.each do |r|
+        char = r.reverse(char)
+      end
+
+      char
+
     end
   end
 
