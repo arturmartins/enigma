@@ -109,7 +109,6 @@ module Enigma
 
     def rotate!
       @offset = (@offset + 1) % ALPHABET.length
-      # self.left.rotate! if self.turnover?
     end
 
     def forward(char)
