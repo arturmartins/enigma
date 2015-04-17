@@ -1,0 +1,28 @@
+-   repo: git://github.com/pre-commit/pre-commit-hooks
+    sha: cedcea550c495d536247ca23115035b17074cac7
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-docstring-first
+    -   id: check-added-large-files
+    -   id: requirements-txt-fixer
+    -   id: detect-private-key
+-   repo: git@github.com:pre-commit/pre-commit
+    sha: cdf726bbedb15f33ca60fdc397fec379946755fc
+    hooks:
+    -   id: validate_config
+    -   id: validate_manifest
+-   repo: git://github.com/pre-commit/mirrors-ruby-lint
+    sha: f4b537e0bf868fc6baefcb61288a12b35aac2157
+    hooks:
+    -   id: ruby-lint
+-   repo: git://github.com/pricematch/mirrors-rubocop
+    sha: 58637f20921ae498a7a50c25b05531dc4f4c46ac
+    hooks:
+    -   id: rubocop
+-   repo: git://github.com/pricematch/pricematch-pre-commit-hooks
+    sha: dd2447ada6d23bb9338d074f9453261924a26a77
+    hooks:
+    -   id: ruby
+    -   id: ruby_timezones
+    -   id: do_not_commit
