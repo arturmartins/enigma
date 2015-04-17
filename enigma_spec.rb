@@ -98,12 +98,6 @@ describe Enigma do
       expect(rotor_iii.turnover?).to eql true
     end
 
-  #   it 'rotor III should rotate rotor II when "W" appears in the window' do
-  #     rotor_iii.set('V')
-  #     rotor_iii.left = rotor_ii
-  #     rotor_iii.rotate!
-  #     expect(rotor_ii.window_char).to eql 'B'
-  #   end
   end
 
   describe Enigma::Reflector do
